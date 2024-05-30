@@ -1,0 +1,8 @@
+matplotlib==3.4.3
+reportlab==3.6.6
+PyPDF2==1.26.0
+datetime
+sqlite3==2.6.0
+matplotlib==3.4.3
+reportlab==3.6.6
+
