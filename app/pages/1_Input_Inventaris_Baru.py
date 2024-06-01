@@ -1,0 +1,85 @@
+import os
+import sqlite3
+import streamlit as st
+from datetime import datetime
+
+st.set_page_config(page_title="Input Inventaris Baru", page_icon="📝")
+
+# Fungsi untuk menambahkan item ke dalam database dan stack inventaris
+def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah):
+    # Koneksi ke database SQLite
+    db_path = os.path.join(project_root, '..', 'database', 'inventaris.db')
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Tanggal saat ini
+    tanggal = datetime.now().strftime("%Y-%m-%d")
+
+    # Buat item inventaris baru sebagai dictionary
+    item = {
+        "Nama Barang": nama_barang,
+        "Kategori": kategori,
+        "Jumlah": jumlah,
+        "Tanggal": tanggal
+    }
+
+    # Tambahkan item ke stack
+    inventory_stack.push(item)
+
+    # Simpan item ke database
+    cursor.execute("""
+        INSERT INTO Daftar_Inventaris (tanggal, nama_barang, kategori, jumlah)
+        VALUES (?, ?, ?, ?)
+    """, (tanggal, nama_barang, kategori, jumlah))
+    conn.commit()
+
+    # Tutup koneksi database
+    conn.close()
+
+    return item
+
+# Class untuk stack inventaris
+class InventoryStack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.stack) == 0
+
+# Fungsi utama untuk menampilkan UI dan menambahkan item inventaris
+def main():
+    # Judul halaman
+    st.title("Input Inventaris Baru")
+
+    # Buat instance InventoryStack
+    inventory_stack = InventoryStack()
+
+    # Input form untuk menambahkan item inventaris
+    nama_barang = st.text_input("Nama Barang:")
+    kategori = st.text_input("Kategori:")
+    jumlah = st.number_input("Jumlah:", min_value=1, step=1)
+
+    if st.button("Tambahkan"):
+        if nama_barang and kategori and jumlah:
+            # Panggil fungsi untuk menambahkan item inventaris
+            new_item = add_inventory_item(inventory_stack, nama_barang, kategori, jumlah)
+            st.success("Item baru berhasil ditambahkan!")
+            st.write("Detail item baru:")
+            st.write(new_item)
+        else:
+            st.warning("Harap isi semua kolom!")
+
+if __name__ == "__main__":
+    # Dapatkan path dari direktori utama
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    # Jalankan aplikasi utama
+    main()

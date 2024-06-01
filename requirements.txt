@@ -1,0 +1,9 @@
+Flask
+flask-session
+streamlit
+pathlib2
+importlib-metadata
+db-sqlite3
+pandas
+reportlab
+PyPDF2

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        video.background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            animation: fadeIn 1s ease-in-out;
+            padding-top: 25px;
+            padding-bottom: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative; /* Set position to relative */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+    <title>Welcome</title>
+</head>
+<body>
+<video class="background-video" autoplay muted loop>
+    <source src="../../assets/abstract-loop.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<div class="container mx-auto px-4 animate__animated animate__fadeIn">
+    <img src="../../assets/logo-UBM.png" alt="UBM Logo" class="mx-auto mb-4 w-25 h-20">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <h2 class="text-2xl">Welcome!</h2>
+            <h2 class="text-2xl">⠀⠀⠀⠀</h2>
+            <h4 class="text-lg text-gray-500">You have successfully logged in.</h4>
+            <p class="text-lg text-gray-500">Your session is active.</p>
+        </div>
+        <form action="{{ url_for('logout') }}">
+            <br>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">Logout
+            </button>
+        </form>
+    </div>
+</div>
+<footer>
+</footer>
+</body>
+</html>
