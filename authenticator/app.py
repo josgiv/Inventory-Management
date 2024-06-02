@@ -1,5 +1,6 @@
 import os
 import json
+import subprocess
 from flask import Flask, render_template, redirect, url_for, request, session, send_from_directory
 from flask_session import Session
 
@@ -64,6 +65,7 @@ def login(alert="Login to continue", alert_type="alert-primary"):
 @app.route('/welcome')
 def welcome():
     if session.get('logged_in'):
+        subprocess.run(['streamlit', 'run', 'app/Beranda_🏠_.py'])
         return render_template('welcome.html')
     else:
         return redirect(url_for('login', invalid="true"))
