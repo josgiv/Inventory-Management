@@ -69,26 +69,35 @@ Projek ini bertujuan untuk mengelola inventaris barang dengan beberapa fitur di 
 
 ## Struktur Folder Aplikasi
 
-📁 app
-│ 📁 pages
-│ │ 📄 1_Input_Inventaris_Baru.py
-│ │ 📄 2_Input_Defektif.py
-│ │ 📄 3_Daftar_Kategori.py
-│ │ 📄 4_Check_Inventaris.py
-│ │ 📄 5_Cetak_Inventaris.py
-│ 📄 Beranda_🏠_.py
-📁 assets
-📁 authenticator
-│ 📁 flask_session
-│ 📁 templates
-│ │ 📄 login.html
-│ │ 📄 welcome.html
-│ 📄 app.py
-📁 database
-│ 📄 create-database.py
-│ 📄 inventaris.db
-📄 main.py
-📄 requirements.txt
+📁 app  
+│&nbsp;&nbsp;&nbsp;&nbsp;📁 pages  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 1_Input_Inventaris_Baru.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 2_Input_Defektif.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 3_Daftar_Kategori.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 4_Check_Inventaris.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 5_Cetak_Inventaris.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;📄 Beranda_🏠_.py  
+📁 assets  
+│&nbsp;&nbsp;&nbsp;&nbsp;📁 app  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 logo_UBM.png  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 no-image-placeholder.jpg  
+│&nbsp;&nbsp;&nbsp;&nbsp;📁 login-page  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 abstrac-ba.png  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 abstract-loop.mp4  
+📁 authenticator  
+│&nbsp;&nbsp;&nbsp;&nbsp;📁 flask_session  
+│&nbsp;&nbsp;&nbsp;&nbsp;📁 templates  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 login.html  
+│&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 welcome.html  
+│&nbsp;&nbsp;&nbsp;&nbsp;📄 app.py  
+📁 database  
+│&nbsp;&nbsp;&nbsp;&nbsp;📄 create-database.py  
+│&nbsp;&nbsp;&nbsp;&nbsp;📄 inventaris.db  
+📄 dockerfile  
+📄 main.py  
+📄 Readme.MD  
+📄 requirements.txt  
+
 
 
 ## Alur Jalannya Software
