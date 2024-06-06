@@ -7,3 +7,5 @@ db-sqlite3
 pandas
 reportlab
 PyPDF2
+pillow
+streamlit-aggrid

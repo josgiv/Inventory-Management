@@ -3,7 +3,7 @@ import sqlite3
 import streamlit as st
 from datetime import datetime
 
-st.set_page_config(page_title="Input Defektif", page_icon="🥡")
+st.set_page_config(page_title="Input Barang Rusak atau Hilang", page_icon="🥡")
 
 # Class untuk stack inventaris
 class InventoryStack:
@@ -23,7 +23,7 @@ class InventoryStack:
         return len(self.items) == 0
 
 # Fungsi untuk menambahkan barang rusak/hilang ke dalam database
-def add_defective_item(id, nama_barang, jumlah, alasan):
+def add_defective_item(id, nama_barang, jumlah, alasan, kategori):
     # Koneksi ke database SQLite
     db_path = os.path.join(project_root, 'database', 'inventaris.db')
     conn = sqlite3.connect(db_path)
@@ -41,11 +41,15 @@ def add_defective_item(id, nama_barang, jumlah, alasan):
         st.error("Jumlah yang diminta melebihi stok saat ini.")
         return
 
+    # Ambil gambar dari tabel Daftar_Inventaris
+    cursor.execute("SELECT gambar FROM Daftar_Inventaris WHERE id = ?", (id,))
+    gambar = cursor.fetchone()[0]
+
     # Tambahkan item ke tabel Inventaris_Rusak
     cursor.execute("""
-        INSERT INTO Inventaris_Rusak (tanggal, nama_barang, jumlah, alasan)
-        VALUES (?, ?, ?, ?)
-    """, (tanggal, nama_barang, jumlah, alasan))
+        INSERT INTO Inventaris_Rusak (tanggal, nama_barang, jumlah, alasan, kategori, gambar)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (tanggal, nama_barang, jumlah, alasan, kategori, gambar))
 
     # Update jumlah barang di Daftar_Inventaris
     cursor.execute("""
@@ -91,6 +95,11 @@ def main():
         unsafe_allow_html=True
     )
 
+    # Deskripsi fitur
+    st.write("""
+    Halaman ini memungkinkan Anda untuk mencatat barang yang rusak atau hilang dalam inventaris. Anda dapat memilih barang yang terdaftar, memilih jumlah dan alasan rusak/hilangnya.
+    """)
+
     # Buat instance InventoryStack
     inventory_stack = InventoryStack()
 
@@ -114,11 +123,15 @@ def main():
     jumlah = st.number_input("Jumlah Inventaris Rusak/Hilang:", min_value=1, step=1)
     alasan = st.selectbox("Alasan:", options=["Rusak", "Hilang"])
 
+    # Mendapatkan kategori dari barang yang dipilih
+    cursor.execute("SELECT kategori FROM Daftar_Inventaris WHERE id = ?", (selected_id,))
+    selected_category = cursor.fetchone()[0]
+
     # Tombol untuk menambahkan barang rusak/hilang
     if st.button("Tambahkan", key="tambahkan_button"):
         if selected_id and jumlah and alasan:
-            inventory_stack.push((selected_id, nama_barang, jumlah, alasan))
-            add_defective_item(selected_id, nama_barang, jumlah, alasan)
+            inventory_stack.push((selected_id, nama_barang, jumlah, alasan, selected_category))
+            add_defective_item(selected_id, nama_barang, jumlah, alasan, selected_category)
         else:
             st.warning("Harap lengkapi semua kolom!")
 
@@ -130,7 +143,8 @@ def main():
                 "ID Barang": detail_barang[0],
                 "Nama Barang": detail_barang[1],
                 "Jumlah": detail_barang[2],
-                "Alasan": detail_barang[3]
+                "Alasan": detail_barang[3],
+                "Kategori": detail_barang[4]
             }
             st.json(detail_dict)
         else:

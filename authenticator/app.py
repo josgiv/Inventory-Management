@@ -1,14 +1,18 @@
-import os
-import json
-import subprocess
 from flask import Flask, render_template, redirect, url_for, request, session, send_from_directory
 from flask_session import Session
+import subprocess
+import webbrowser
+import time
+import os
+import json
 
 app = Flask(__name__)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+streamlit_process = None
 
 # Set the static folder to the directory containing your static files
 app.static_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'assets'))
@@ -64,9 +68,14 @@ def login(alert="Login to continue", alert_type="alert-primary"):
 
 @app.route('/welcome')
 def welcome():
-    if session.get('logged_in'):
-        subprocess.run(['streamlit', 'run', 'app/Beranda_🏠_.py'])
-        return render_template('welcome.html')
+    global streamlit_process
+    if streamlit_process is None or streamlit_process.poll() is not None:
+            # Menjalankan subprocess untuk Streamlit
+            streamlit_process = subprocess.Popen(["streamlit", "run", "../app/Beranda_🏠_.py"], shell=True)
+            # Memberi waktu untuk Streamlit untuk memulai
+            time.sleep(2)
+            # Membuka URL Streamlit di browser
+            return render_template('welcome.html')
     else:
         return redirect(url_for('login', invalid="true"))
 
