@@ -1,8 +1,11 @@
 import subprocess
 import threading
+import os
 
 def run_app():
-    subprocess.run(['flask', 'run'], cwd='authenticator')  # Menentukan jalur kerja ke folder 'authenticator'
+    # Mendapatkan jalur lengkap ke berkas Beranda_🏠_.py di dalam folder 'app'
+    app_path = os.path.join('app', 'Beranda_🏠_.py')
+    subprocess.Popen(['streamlit', 'run', app_path])
 
 if __name__ == '__main__':
     # Memulai aplikasi dalam thread baru
