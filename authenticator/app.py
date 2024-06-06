@@ -4,7 +4,7 @@ import subprocess
 import webbrowser
 import time
 import os
-import json
+import sqlite3
 
 app = Flask(__name__)
 
@@ -17,37 +17,25 @@ streamlit_process = None
 # Set the static folder to the directory containing your static files
 app.static_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'assets'))
 
-# Path to user data JSON file
-USER_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'user_data.json'))
-
-def load_credentials_from_json():
-    # Load user data from JSON file
-    if os.path.exists(USER_DATA_PATH):
-        with open(USER_DATA_PATH, 'r') as f:
-            return json.load(f)
-    else:
-        # Return an empty dictionary if file doesn't exist
-        return {}
-
-def save_credentials_to_json(credentials):
-    # Save credentials to JSON file
-    with open(USER_DATA_PATH, 'w') as f:
-        json.dump(credentials, f)
+# Path to database file
+DATABASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'inventaris.db'))
 
 def validate_credentials(username, password):
-    # Load user data
-    user_data = load_credentials_from_json()
-
-    # Check if username exists and password matches
-    if username in user_data:
-        if user_data[username]["password"] == password:
+    # Connect to the database
+    with sqlite3.connect(DATABASE_PATH) as conn:
+        cursor = conn.cursor()
+        # Execute SQL query to retrieve user data
+        cursor.execute("SELECT * FROM Users WHERE username = ? AND password = ?", (username, password))
+        # Fetch the result
+        user = cursor.fetchone()
+        # If user exists and password matches, return True
+        if user:
             return True
-
     return False
 
 @app.route('/')
 def index():
-    # Cek apakah user sudah login, jika belum redirect ke halaman login
+    # Check if user is logged in, if not, redirect to login page
     if not session.get("logged_in"):
         session["logged_in"] = False
         return redirect(url_for('login'))
@@ -69,15 +57,16 @@ def login(alert="Login to continue", alert_type="alert-primary"):
 @app.route('/welcome')
 def welcome():
     global streamlit_process
-    if streamlit_process is None or streamlit_process.poll() is not None:
-            # Menjalankan subprocess untuk Streamlit
+    if session.get("logged_in"):
+        if streamlit_process is None or streamlit_process.poll() is not None:
+            # Run subprocess for Streamlit
             streamlit_process = subprocess.Popen(["streamlit", "run", "../app/Beranda_🏠_.py"], shell=True)
-            # Memberi waktu untuk Streamlit untuk memulai
+            # Allow time for Streamlit to start
             time.sleep(2)
-            # Membuka URL Streamlit di browser
+            # Open Streamlit URL in browser
             return render_template('welcome.html')
-    else:
-        return redirect(url_for('login', invalid="true"))
+    return redirect(url_for('login', invalid="true"))
+
 
 @app.route('/validate', methods=['POST'])
 def validate():
@@ -95,7 +84,7 @@ def logout():
     session['logged_in'] = False
     return redirect(url_for('login'))
 
-# Tambahkan rute untuk mengambil gambar dari folder 'assets'
+# Add route to serve images from the 'assets' folder
 @app.route('/assets/<path:filename>')
 def assets(filename):
     return send_from_directory(app.static_folder, filename)
