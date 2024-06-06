@@ -92,7 +92,7 @@ def create_inventory_pdf():
 
     # Menyiapkan file PDF dalam memori
     buffer = BytesIO()
-    create_pdf(buffer, inventaris_data, "Inventaris PT SUKA BACAPAK")
+    create_pdf(buffer, inventaris_data, "Inventaris CV. Di Lobby Terus")
     return buffer
 
 # Fungsi untuk membuat PDF Inventaris Rusak
@@ -107,7 +107,7 @@ def create_damaged_inventory_pdf():
 
     # Menyiapkan file PDF dalam memori
     buffer = BytesIO()
-    create_pdf(buffer, inventaris_rusak_data, "Inventaris Rusak PT SUKA BACAPAK", is_damaged=True)
+    create_pdf(buffer, inventaris_rusak_data, "Inventaris Rusak CV. Di Lobby Terus", is_damaged=True)
     return buffer
 
 # Fungsi untuk membuat PDF gabungan
@@ -131,7 +131,7 @@ def create_combined_pdf(queue):
 def main():
     # Menjalankan aplikasi
     # Bagian yang diubah untuk menggunakan st.download_button tanpa st.button lagi
-    st.title("Aplikasi Inventaris PT SUKA BACAPAK")
+    st.title("Cetak Laporan Inventaris CV. Di Lobby Terus")
 
     st.subheader("Daftar Inventaris")
     inventory_pdf = create_inventory_pdf()
@@ -151,7 +151,7 @@ def main():
         mime="application/pdf"
     )
 
-    st.subheader("Laporan Inventaris Barang PT Suka Bapak")
+    st.subheader("Laporan Inventaris Barang CV. Di Lobby Terus")
     queue = Queue()  # Membuat antrian untuk menyimpan hasil PDF gabungan
 
     # Fungsi untuk menghasilkan PDF gabungan dan menambahkannya ke dalam antrian
@@ -167,7 +167,7 @@ def main():
     st.download_button(
         label="Download PDF gabungan",
         data=combined_pdf,
-        file_name="Laporan_Inventaris_PT_Suka_Bapak.pdf",
+        file_name="Laporan_Inventaris_CV_Di_Lobby_Terus.pdf",
         mime="application/pdf"
     )
 
