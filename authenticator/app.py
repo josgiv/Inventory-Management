@@ -6,6 +6,8 @@ import time
 import os
 import sqlite3
 
+from sympy import true
+
 app = Flask(__name__)
 
 app.config["SESSION_PERMANENT"] = False
@@ -90,4 +92,4 @@ def assets(filename):
     return send_from_directory(app.static_folder, filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug= true, host='0.0.0.0', port=5000)

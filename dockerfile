@@ -15,3 +15,4 @@ EXPOSE 5000
 
 # Jalankan main.py ketika container dijalankan
 CMD ["python", "main.py"]
+
