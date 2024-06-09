@@ -3,12 +3,33 @@ import sqlite3
 import os
 import pandas as pd
 
+# Definisikan class Stack
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        return None
+
 # Mendeklarasikan jalur basis data secara relatif dari lokasi skrip
 db_path_kategori = os.path.join(os.path.dirname(__file__), '..', '..', 'database', 'inventaris.db')
 
 # Inisialisasi session state untuk menyimpan daftar kategori sebagai stack
 if 'categories' not in st.session_state:
-    st.session_state['categories'] = []
+    st.session_state['categories'] = Stack()
 
 # Fungsi untuk memeriksa keberadaan tabel
 def table_exists():
@@ -58,7 +79,7 @@ def add_category():
         if new_category:
             if table_exists():
                 if add_category_to_db(new_category):
-                    st.session_state['categories'].append(new_category)
+                    st.session_state['categories'].push(new_category)
                     st.success(f'Kategori "{new_category}" berhasil ditambahkan!')
                 else:
                     st.warning(f'Kategori "{new_category}" sudah ada di database.')
@@ -96,7 +117,9 @@ def show_categories():
                 if updated_rows:
                     updated_df = pd.DataFrame(updated_rows, columns=['ID', 'Nama Kategori'])
                     st.markdown(updated_df.to_html(index=False), unsafe_allow_html=True)
-                    st.session_state['categories'] = [row[1] for row in updated_rows]
+                    st.session_state['categories'] = Stack()
+                    for row in updated_rows:
+                        st.session_state['categories'].push(row[1])
                 else:
                     st.write("Belum ada kategori yang ditambahkan.")
         else:

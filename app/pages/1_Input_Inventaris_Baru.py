@@ -5,7 +5,21 @@ from datetime import datetime
 
 st.set_page_config(page_title="Input Inventaris Baru", page_icon="📝")
 
+# Class untuk stack inventaris
+class InventoryStack:
+    def __init__(self):
+        self.stack = []
 
+    def push(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.stack) == 0
 
 # Fungsi untuk menambahkan item ke dalam database dan stack inventaris
 def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah, gambar_bytes):
@@ -49,21 +63,7 @@ def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah, gambar_by
 
     return item
 
-# Class untuk stack inventaris
-class InventoryStack:
-    def __init__(self):
-        self.stack = []
 
-    def push(self, item):
-        self.stack.append(item)
-
-    def pop(self):
-        if not self.is_empty():
-            return self.stack.pop()
-        return None
-
-    def is_empty(self):
-        return len(self.stack) == 0
 
 # Fungsi utama untuk menampilkan UI dan menambahkan item inventaris
 def main():
