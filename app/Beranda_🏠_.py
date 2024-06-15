@@ -5,14 +5,23 @@ import importlib.util
 # Set konfigurasi halaman
 st.set_page_config(page_title="**Manajemen Inventaris Barang**", page_icon="👋")
 
-# Menampilkan anggota kelompok di sidebar
-st.sidebar.title("**Anggota Kelompok:**")
-st.sidebar.markdown("- **Josia Given Santoso**")
-st.sidebar.markdown("- **Fazrina Ramadhani**")
-st.sidebar.markdown("- **Vania Devina Devara**")
-st.sidebar.markdown("- **Vinsensius Erik Kie**")
-st.sidebar.markdown("- **Zebina Jhon**")
-st.sidebar.markdown("- **Natzwa Novena  Rantung**")
+# Optional: Menambahkan catatan atau informasi tambahan di sidebar
+st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
+
+# Daftar anggota
+anggota = [
+    ("Natzwa Novena Rantung", "36230026"),
+    ("Vania Devina Devara", "36230027"),
+    ("Zebina Jhon", "36230028"),
+    ("Josia Given Santoso", "36230035"),
+    ("Vinsensius Erik Kie", "36230037"),
+    ("Fazrina Rahmadhani", "36230039"),
+]
+
+# Menampilkan informasi anggota di sidebar dengan bullet points
+st.sidebar.markdown("### Daftar Anggota:")
+for nama, nim in anggota:
+    st.sidebar.markdown(f"- **{nama}** ({nim})")
 
 # Konfigurasi halaman utama
 st.title("**Manajemen Inventaris Barang**")

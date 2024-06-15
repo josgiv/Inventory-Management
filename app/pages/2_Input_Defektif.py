@@ -111,21 +111,25 @@ def main():
     # Ambil daftar inventaris dari database
     cursor.execute("SELECT id, nama_barang, jumlah FROM Daftar_Inventaris")
     items = cursor.fetchall()
-    item_options = {f"ID : {item[0]} - Nama Barang : {item[1]} (Stok: {item[2]})": (item[0], item[1]) for item in items}
-
-    # Input form untuk memilih barang
-    selected_item = st.selectbox("Pilih Barang:", options=list(item_options.keys()))
-
-    # Ambil id dan nama barang yang dipilih
-    selected_id, nama_barang = item_options[selected_item]
+    
+    if items:
+        item_options = {f"ID : {item[0]} - Nama Barang : {item[1]} (Stok: {item[2]})": (item[0], item[1]) for item in items}
+        selected_item = st.selectbox("Pilih Barang:", options=list(item_options.keys()))
+        selected_id, nama_barang = item_options[selected_item]
+    else:
+        st.selectbox("Pilih Barang:", options=["Tidak ada inventaris yang dapat dihapus"])
+        selected_id, nama_barang = None, None
 
     # Input form untuk jumlah dan alasan
     jumlah = st.number_input("Jumlah Inventaris Rusak/Hilang:", min_value=1, step=1)
     alasan = st.selectbox("Alasan:", options=["Rusak", "Hilang"])
 
     # Mendapatkan kategori dari barang yang dipilih
-    cursor.execute("SELECT kategori FROM Daftar_Inventaris WHERE id = ?", (selected_id,))
-    selected_category = cursor.fetchone()[0]
+    if selected_id:
+        cursor.execute("SELECT kategori FROM Daftar_Inventaris WHERE id = ?", (selected_id,))
+        selected_category = cursor.fetchone()[0]
+    else:
+        selected_category = None
 
     # Tombol untuk menambahkan barang rusak/hilang
     if st.button("Tambahkan", key="tambahkan_button"):
@@ -134,6 +138,7 @@ def main():
             add_defective_item(selected_id, nama_barang, jumlah, alasan, selected_category)
         else:
             st.warning("Harap lengkapi semua kolom!")
+
 
     # Menampilkan detail barang yang ditambahkan rusak atau hilang dalam format JSON
     if st.checkbox("Tampilkan Detail Barang yang Ditambahkan", key="detail_checkbox"):
@@ -152,6 +157,23 @@ def main():
 
     # Tutup koneksi database
     conn.close()
+
+st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
+
+# Daftar anggota
+anggota = [
+    ("Natzwa Novena Rantung", "36230026"),
+    ("Vania Devina Devara", "36230027"),
+    ("Zebina Jhon", "36230028"),
+    ("Josia Given Santoso", "36230035"),
+    ("Vinsensius Erik Kie", "36230037"),
+    ("Fazrina Rahmadhani", "36230039"),
+]
+
+# Menampilkan informasi anggota di sidebar dengan bullet points
+st.sidebar.markdown("### Daftar Anggota:")
+for nama, nim in anggota:
+    st.sidebar.markdown(f"- **{nama}** ({nim})")
 
 if __name__ == "__main__":
     # Dapatkan path dari direktori utama

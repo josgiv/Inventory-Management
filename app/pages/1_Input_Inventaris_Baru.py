@@ -104,6 +104,25 @@ def main():
             st.write(new_item)
         else:
             st.warning("Harap isi semua kolom!")
+            
+            # Sidebar dengan informasi anggota
+
+st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
+
+# Daftar anggota
+anggota = [
+    ("Natzwa Novena Rantung", "36230026"),
+    ("Vania Devina Devara", "36230027"),
+    ("Zebina Jhon", "36230028"),
+    ("Josia Given Santoso", "36230035"),
+    ("Vinsensius Erik Kie", "36230037"),
+    ("Fazrina Rahmadhani", "36230039"),
+]
+
+# Menampilkan informasi anggota di sidebar dengan bullet points
+st.sidebar.markdown("### Daftar Anggota:")
+for nama, nim in anggota:
+    st.sidebar.markdown(f"- **{nama}** ({nim})")
 
 if __name__ == "__main__":
     # Dapatkan path dari direktori utama
