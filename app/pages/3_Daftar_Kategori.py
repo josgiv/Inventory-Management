@@ -152,7 +152,6 @@ def main():
     # Sidebar dengan informasi anggota
 st.sidebar.title("Daftar Anggota")
 
-# Optional: Menambahkan catatan atau informasi tambahan di sidebar
 st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
 
 # Daftar anggota
@@ -165,7 +164,7 @@ anggota = [
     ("Fazrina Rahmadhani", "36230039"),
 ]
 
-# Menampilkan informasi anggota di sidebar dengan bullet points
+# Menampilkan informasi anggota di sidebar 
 st.sidebar.markdown("### Daftar Anggota:")
 for nama, nim in anggota:
     st.sidebar.markdown(f"- **{nama}** ({nim})")

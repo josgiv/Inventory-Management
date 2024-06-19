@@ -132,9 +132,9 @@ def show_all_tables():
 
     
 def main():
-    st.title("Daftar Inventaris PT Bapak Maju Terus")
+    st.title("Daftar Inventaris CV. Dilobby Terus")
     st.markdown("""
-    Aplikasi ini menampilkan daftar inventaris PT Bapak Maju Terus, termasuk barang-barang yang rusak atau hilang.
+    Aplikasi ini menampilkan daftar inventaris CV. Dilobby Terus, termasuk barang-barang yang rusak atau hilang.
     """)
     show_all_tables()
 

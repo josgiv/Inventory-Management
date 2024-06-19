@@ -28,7 +28,7 @@ def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah, gambar_by
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    # Tanggal saat ini
+    # Tanggal saat barang dimasukan
     tanggal = datetime.now().strftime("%Y-%m-%d")
 
     # Ubah gambar menjadi nama file jika ada
@@ -62,8 +62,6 @@ def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah, gambar_by
     conn.close()
 
     return item
-
-
 
 # Fungsi utama untuk menampilkan UI dan menambahkan item inventaris
 def main():

@@ -36,7 +36,7 @@ def add_defective_item(id, nama_barang, jumlah, alasan, kategori):
     cursor.execute("SELECT jumlah FROM Daftar_Inventaris WHERE id = ?", (id,))
     current_stock = cursor.fetchone()[0]
 
-    # Jika jumlah yang diminta melebihi stok saat ini, tampilkan pesan kesalahan
+    # Jika jumlah yang diminta melebihi stok saat ini, tampilkan pesan error
     if jumlah > current_stock:
         st.error("Jumlah yang diminta melebihi stok saat ini.")
         return
