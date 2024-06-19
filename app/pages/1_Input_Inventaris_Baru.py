@@ -39,12 +39,12 @@ def add_inventory_item(inventory_stack, nama_barang, kategori, jumlah, gambar_by
         nama_file_gambar = None
         gambar = None
 
-    # Buat item inventaris baru sebagai dictionary
+    # Membuat item inventaris baru sebagai dictionary
     item = {
         "Nama Barang": nama_barang,
         "Kategori": kategori,
         "Jumlah": jumlah,
-        "Gambar": nama_file_gambar,  # Menggunakan nama file gambar
+        "Gambar": nama_file_gambar, 
         "Tanggal": tanggal
     }
 
@@ -105,8 +105,7 @@ def main():
         else:
             st.warning("Harap isi semua kolom!")
             
-            # Sidebar dengan informasi anggota
-
+# Sidebar dengan informasi anggota Kelompok
 st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
 
 # Daftar anggota
@@ -125,8 +124,5 @@ for nama, nim in anggota:
     st.sidebar.markdown(f"- **{nama}** ({nim})")
 
 if __name__ == "__main__":
-    # Dapatkan path dari direktori utama
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-    # Jalankan aplikasi utama
     main()

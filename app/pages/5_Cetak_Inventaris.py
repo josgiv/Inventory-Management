@@ -1,8 +1,7 @@
 import os
 import streamlit as st
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import Table, TableStyle, Image
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image, PageBreak
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 import sqlite3
@@ -28,21 +27,37 @@ def get_image_from_blob(blob_data):
         return None
 
 def create_pdf(file_buffer, inventaris_data, title, is_damaged=False):
-    # Menyiapkan file PDF
-    c = canvas.Canvas(file_buffer, pagesize=A4)
-    width, height = A4
-
+    # Menyiapkan dokumen PDF
+    doc = SimpleDocTemplate(file_buffer, pagesize=A4)
+    elements = []
+    
     # Path ke logo UBM
     logo_path = os.path.join(ASSETS_DIR, 'logo_ubm.png')
 
-    # Menambahkan logo UBM dengan jarak dari atas sedikit lebih besar
+    # Menambahkan logo UBM
     ubm_logo = Image(logo_path, width=80, height=60)
-    ubm_logo.wrapOn(c, width, height)
-    ubm_logo.drawOn(c, (width - 80) / 2, height - 150)  # Menambahkan jarak ke bawah dari atas
+    elements.append(ubm_logo)
 
-    # Menambahkan judul dengan jarak dari logo UBM
-    c.setFont("Helvetica-Bold", 20)
-    c.drawCentredString(width / 2, height - 200, title)  # Menambahkan jarak ke bawah dari logo
+    # Menambahkan jarak antara logo dan judul
+    elements.append(Table([[" "]], colWidths=[6 * inch]))
+    elements[-1].setStyle(TableStyle([
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 20),
+    ]))
+
+    # Menambahkan judul
+    elements.append(Table([[title]], colWidths=[6 * inch]))
+    elements[-1].setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 20),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12), 
+    ]))
+
+    # Menambahkan jarak antara judul dan tabel
+    elements.append(Table([[" "]], colWidths=[6 * inch]))
+    elements[-1].setStyle(TableStyle([
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 20),  
+    ]))
 
     # Menambahkan tabel inventaris
     table_data = [['ID', 'Tanggal', 'Nama Barang', 'Kategori', 'Jumlah', 'Alasan' if is_damaged else 'Foto']]
@@ -54,7 +69,7 @@ def create_pdf(file_buffer, inventaris_data, title, is_damaged=False):
             image = Image(DEFAULT_IMAGE_PATH, width=50, height=50)
         table_data.append(list(row[:-1]) + [image])
 
-    table = Table(table_data, colWidths=[inch]*7, rowHeights=[inch]*len(table_data))
+    table = Table(table_data, colWidths=[inch]*7)
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -62,23 +77,12 @@ def create_pdf(file_buffer, inventaris_data, title, is_damaged=False):
         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
         ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),  # Warna teks hitam
-        ('SPACEBEFORE', (0, 0), (-1, -1), 20*inch),  # Jarak atas
-        ('SPACEAFTER', (0, 0), (-1, -1), 20*inch),   # Jarak bawah
     ]))
-
-    # Mengukur lebar tabel dan tinggi tabel
-    table.wrapOn(c, width, height)
-    table_width, table_height = table.wrap(0, 0)
-
-    # Menghitung posisi tabel agar berada di tengah halaman
-    x_start = (width - table_width) / 2
-    y_start = height - 280 - table_height  # Menambahkan jarak yang lebih besar ke bawah
-    table.drawOn(c, x_start, y_start)
-
-    # Menutup file PDF
-    c.showPage()
-    c.save()
+    
+    elements.append(table)
+    doc.build(elements)
     file_buffer.seek(0)
+
 
 # Fungsi untuk membuat PDF Daftar Inventaris
 def create_inventory_pdf():
@@ -130,7 +134,6 @@ def create_combined_pdf(queue):
 
 def main():
     # Menjalankan aplikasi
-    # Bagian yang diubah untuk menggunakan st.download_button tanpa st.button lagi
     st.title("Cetak Laporan Inventaris CV. Di Lobby Terus")
 
     st.subheader("Daftar Inventaris")
@@ -171,7 +174,6 @@ def main():
         mime="application/pdf"
     )
 
-# Optional: Menambahkan catatan atau informasi tambahan di sidebar
 st.sidebar.info("Daftar anggota Prodi Sains Data Semester 2")
 
 # Daftar anggota

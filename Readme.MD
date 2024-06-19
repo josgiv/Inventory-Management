@@ -2,25 +2,38 @@
 
 **Projek ini bertujuan untuk mengelola inventaris barang dengan beberapa fitur yang berguna.**
 
+## Persyaratan
+
+- Python 3.8 atau lebih baru
+- pip (Python package installer)
+
 ## Tutorial Menjalankan Aplikasi
 
 1. Clone repositori ini ke dalam direktori lokal Anda:
     ```bash
-    git clone https://github.com/username/manajemen-inventaris-barang.git
-    cd manajemen-inventaris-barang
+    git clone https://github.com/josgiv/Inventory-Management.git
+    cd Inventory-Management
     ```
 
-2. Install semua dependensi yang diperlukan menggunakan `pip`:
+2. Buat dan aktifkan virtual Environment (Opsional tapi disarankan):
+    
+    ```bash
+    python -m venv venv
+    source venv/bin/activate   # Untuk Linux/Mac
+    .\venv\Scripts\activate    # Untuk Windows
+     ```
+
+3. Install semua dependensi yang diperlukan menggunakan `pip`:
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Jalankan aplikasi menggunakan perintah berikut:
+4. Jalankan aplikasi menggunakan perintah berikut:
     ```bash
     python main.py
     ```
 
-4. Akses aplikasi pada alamat localhost berikut di browser anda:
+5. Akses aplikasi pada alamat localhost berikut di browser anda:
     ```
     http://localhost:5000
     ```
@@ -91,9 +104,7 @@ Projek ini bertujuan untuk mengelola inventaris barang dengan beberapa fitur di 
 │&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;📄 welcome.html  
 │&nbsp;&nbsp;&nbsp;&nbsp;📄 app.py  
 📁 database  
-│&nbsp;&nbsp;&nbsp;&nbsp;📄 create-database.py  
 │&nbsp;&nbsp;&nbsp;&nbsp;📄 inventaris.db  
-📄 dockerfile  
 📄 main.py  
 📄 Readme.MD  
 📄 requirements.txt  
