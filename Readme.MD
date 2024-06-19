@@ -25,7 +25,7 @@
 
 3. Install semua dependensi yang diperlukan menggunakan `pip`:
     ```bash
-    pip install -r requirements.txt --no-warn-script-location
+    pip install -r requirements.txt
     ```
 
 4. Jalankan aplikasi menggunakan perintah berikut:
