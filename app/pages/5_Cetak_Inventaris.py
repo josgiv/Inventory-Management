@@ -129,7 +129,7 @@ def create_combined_pdf(queue):
     pdf_merger.write(combined_buffer)
     pdf_merger.close()
 
-    # Menambahkan hasil ke antrian
+    # Menambahkan hasil ke queue
     queue.put(combined_buffer)
 
 def main():
@@ -155,9 +155,9 @@ def main():
     )
 
     st.subheader("Laporan Inventaris Barang CV. Di Lobby Terus")
-    queue = Queue()  # Membuat antrian untuk menyimpan hasil PDF gabungan
+    queue = Queue()  # Membuat queue untuk menyimpan hasil PDF gabungan
 
-    # Fungsi untuk menghasilkan PDF gabungan dan menambahkannya ke dalam antrian
+    # Fungsi untuk menghasilkan PDF gabungan dan menambahkannya ke dalam queue
     def generate_combined_pdf():
         create_combined_pdf(queue)
 
@@ -165,7 +165,7 @@ def main():
     thread = threading.Thread(target=generate_combined_pdf)
     thread.start()
 
-    # Menunggu hasil dari antrian
+    # Menunggu hasil dari queue
     combined_pdf = queue.get()
     st.download_button(
         label="Download PDF gabungan",
